@@ -1,9 +1,9 @@
 defmodule Gpsapp.GPSController do
-    use Gpsapp.Web, :controller
+	use Gpsapp.Web, :controller
 	
 	require Logger
 	
-	import Plug.Conn, only: [send_resp: 3]
+	# import Plug.Conn, only: [send_resp: 3]
 #	use GPS.Parse
 	
 	plug :action

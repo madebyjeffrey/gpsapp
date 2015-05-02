@@ -16,7 +16,7 @@ defmodule Gpsapp.Endpoint do
   plug Plug.Logger
 
   plug Plug.Parsers,
-    parsers: [:urlencoded, :multipart, :json],
+    parsers: [:urlencoded, :multipart, :json, :gps],
     pass: ["*/*"],
     json_decoder: Poison
 
