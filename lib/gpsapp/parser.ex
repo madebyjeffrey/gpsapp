@@ -1,30 +1,30 @@
 defmodule Plug.Parsers.GPS do
-	@behaviour Plug.Parsers
-	
+  @behaviour Plug.Parsers
+  
   import Plug.Conn
-	
-	def parse(conn, "text", "gps", _headers, opts) do
-		conn
-		|> read_body(opts)
-		|> decode(conn)
-	end
-	
-	def parse(conn, _, _, _, _) do
+  
+  def parse(conn, "text", "gps", _headers, opts) do
+    conn
+    |> read_body(opts)
+    |> decode(conn)
+  end
+  
+  def parse(conn, _, _, _, _) do
     {:next, conn}
-	end
-	
-	def decode(conn, "$GPRMC," <> rmc) do
+  end
+  
+  def decode(conn, "$GPRMC," <> rmc) do
     components = String.split(rmc, ",")        
     latitude = (components |> Enum.at(3) |> direction) * (components |> Enum.at(2) |> latitude)
     longitude = (components |> Enum.at(5) |> direction) * (components |> Enum.at(4) |> longitude)
     date = datetime(components |> Enum.at(8), components |> Enum.at(0))
     {:ok, %{latitude: latitude, longitude: longitude, date: date}, conn}
-	end
-	
-	def decode(conn, _) do
+  end
+  
+  def decode(conn, _) do
     {:next, conn}
-	end
-	
+  end
+  
   @doc("Converts a NMEA latitude LLll.lll to LL + ll.lll/60 where ll.lll is in decimal hours")
   def latitude(str_lat) do
     (str_lat |> String.slice(0..1) |> String.to_integer) +
