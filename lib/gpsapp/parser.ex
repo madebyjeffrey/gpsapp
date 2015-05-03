@@ -2,6 +2,7 @@ defmodule Plug.Parsers.GPS do
   @behaviour Plug.Parsers
 
   import Plug.Conn
+  use Timex
 
   def parse(conn, "text", "gps", _headers, opts) do
     conn
