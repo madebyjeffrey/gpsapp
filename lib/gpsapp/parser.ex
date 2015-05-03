@@ -5,6 +5,7 @@ defmodule Plug.Parsers.GPS do
   use Timex
 
   def parse(conn, "text", "gps", _headers, opts) do
+    IO.inspect "parsing"
     conn
     |> read_body(opts)
     |> decode
@@ -19,10 +20,17 @@ defmodule Plug.Parsers.GPS do
     latitude = (components |> Enum.at(3) |> direction) * (components |> Enum.at(2) |> latitude)
     longitude = (components |> Enum.at(5) |> direction) * (components |> Enum.at(4) |> longitude)
     date = datetime(components |> Enum.at(8), components |> Enum.at(0))
+
+    IO.inspect latitude
+    IO.inspect longitude
+    IO.inspect date
+
     {:ok, %{latitude: latitude, longitude: longitude, date: date}, conn}
   end
 
-  def decode({_, _, conn}) do
+  def decode({_, str, conn}) do
+    IO.inspect "NEXT!"
+    IO.inspect str
     {:next, conn}
   end
 

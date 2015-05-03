@@ -19,8 +19,10 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+  # adds mime types
 config :plug, :mimes, %{
-	"text/gps" => ["gps"]
+	"text/gps" => ["gps"],
+	"text/plain" => ["text"]
 }
 
 # Import environment specific config. This must remain at the bottom
