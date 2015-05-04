@@ -1,38 +1,52 @@
-defmodule Plug.Parsers.GPS do
-  @behaviour Plug.Parsers
+defmodule GPS.Parser do
+#  @behaviour Plug.Parsers
 
-  import Plug.Conn
+#  import Plug.Conn
   use Timex
 
-  def parse(conn, "text", "gps", _headers, opts) do
-    IO.inspect "parsing"
-    conn
-    |> read_body(opts)
-    |> decode
-  end
+#  def parse(conn, "text", "gps", _headers, opts) do
+#    IO.inspect "parsing"
+#    conn
+#    |> read_body(opts)
+#    |> decode
+#  end
 
-  def parse(conn, _, _, _, _) do
-    {:next, conn}
-  end
+#  def parse(conn, _, _, _, _) do
+#    {:next, conn}
+#  end
 
-  def decode({:ok, "$GPRMC," <> rmc, conn}) do
+  def decode("$GPRMC," <> rmc) do
     components = String.split(rmc, ",")
     latitude = (components |> Enum.at(3) |> direction) * (components |> Enum.at(2) |> latitude)
     longitude = (components |> Enum.at(5) |> direction) * (components |> Enum.at(4) |> longitude)
     date = datetime(components |> Enum.at(8), components |> Enum.at(0))
 
-    IO.inspect latitude
-    IO.inspect longitude
-    IO.inspect date
-
-    {:ok, %{latitude: latitude, longitude: longitude, date: date}, conn}
+    {:ok, %{latitude: latitude, longitude: longitude, date: date}}
   end
 
-  def decode({_, str, conn}) do
-    IO.inspect "NEXT!"
-    IO.inspect str
-    {:next, conn}
+  def decode(_) do
+    {:error, ~s{Invalid string}}
   end
+
+#  def decode({:ok, "$GPRMC," <> rmc, conn}) do
+#    components = String.split(rmc, ",")
+#    latitude = (components |> Enum.at(3) |> direction) * (components |> Enum.at(2) |> latitude)
+#    longitude = (components |> Enum.at(5) |> direction) * (components |> Enum.at(4) |> longitude)
+#    date = datetime(components |> Enum.at(8), components |> Enum.at(0))
+
+#    IO.inspect latitude
+#    IO.inspect longitude
+#    IO.inspect date
+
+#    {:ok, %{latitude: latitude, longitude: longitude, date: date}, conn}
+#  end
+
+#  def decode({_, str, conn}) do
+#    IO.inspect "NEXT!"
+#    IO.inspect str
+#    conn |> send_resp(
+#    {:next, conn}
+#  end
 
   @doc("Converts a NMEA latitude LLll.lll to LL + ll.lll/60 where ll.lll is in decimal hours")
   def latitude(str_lat) do

@@ -17,7 +17,7 @@ defmodule Gpsapp.Mixfile do
   # Type `mix help compile.app` for more information
   def application do
     [mod: {Gpsapp, []},
-     applications: [:phoenix, :cowboy, :logger, :ecto]]
+     applications: [:phoenix, :cowboy, :logger, :ecto, :timex]]
   end
 
   # Specifies which paths to compile per environment
@@ -27,12 +27,14 @@ defmodule Gpsapp.Mixfile do
   # Specifies your project dependencies
   #
   # Type `mix help deps` for examples and options
-	defp deps do
-		[{:phoenix, "~> 0.11"},
-		 {:phoenix_ecto, "~> 0.3"},
-		 {:postgrex, ">= 0.0.0"},
-		 {:phoenix_live_reload, "~> 0.3"},
-		 {:cowboy, "~> 1.0"},
-		 {:timex, "~> 0.13.4"}]
-	  end
+  defp deps do
+    [{:phoenix, "~> 0.11"},
+    {:phoenix_ecto, "~> 0.3"},
+    {:postgrex, ">= 0.0.0"},
+    {:phoenix_live_reload, "~> 0.3"},
+    {:cowboy, "~> 1.0"},
+    {:timex, "~> 0.13.4"},
+    {:plug, github: "elixir-lang/plug", override: true},
+    {:exrm, "~> 0.14.16"}]
+  end
 end

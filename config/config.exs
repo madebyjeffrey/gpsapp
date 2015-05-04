@@ -11,6 +11,7 @@ config :gpsapp, Gpsapp.Endpoint,
   root: Path.expand("..", __DIR__),
   secret_key_base: "F82UWeJiAzml0mk1XfGKD1YGuyfKKii5v2vM3fL/IyazqJr/hoVkFfLsdVSooeYm",
   debug_errors: false,
+  server: true,
   pubsub: [name: Gpsapp.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
@@ -21,7 +22,7 @@ config :logger, :console,
 
   # adds mime types
 config :plug, :mimes, %{
-	"text/gps" => ["gps"],
+#	"text/gps" => ["gps"],
 	"text/plain" => ["text"]
 }
 
